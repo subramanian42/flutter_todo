@@ -165,93 +165,59 @@ class _TaskManagerState extends State<TaskManager> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Column(
-        //crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: FirebaseFirestore.instance
-                  .collection('users')
-                  .doc('nHWlml1op9eNg9Hl1TBZ')
-                  .collection('Task')
-                  .snapshots(),
-              builder: (context, asyncsnap) {
-                if (!asyncsnap.hasData) {
-                  return Center(child: Text('NO TASKS LEFT YAY!!'));
-                }
-                return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: asyncsnap.data?.size,
-                    itemBuilder: (context, index) {
-                      QueryDocumentSnapshot<Map<String, dynamic>> userDa =
-                          asyncsnap.data!.docs[index];
-                      return Dismissible(
-                        key: UniqueKey(),
-                        child: InkWell(
-                          onTap: () {
-                            dialogbox(
-                              userDa.data()['id'],
-                              userDa.data()['tasktitle'],
-                              userDa.data()['DueDate'],
-                              userDa.data()['taskdetails'],
-                            );
-                          },
-                          child: Card(
-                            elevation: 10,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Checkbox(
-                                        value: userDa.data()['taskstatus'],
-                                        onChanged: (status) async {
-                                          await taskRef
-                                              .doc(userDa.data()['id'])
-                                              .update({
-                                            'taskstatus': true,
-                                          });
-                                        }),
-                                    Text(
-                                      userDa.data()['tasktitle'],
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: userDa.data()['taskstatus']
-                                              ? Colors.grey
-                                              : Colors.black,
-                                          decoration:
-                                              userDa.data()['taskstatus']
-                                                  ? TextDecoration.lineThrough
-                                                  : TextDecoration.none),
-                                    ),
-                                    Text(
-                                      userDa.data()['DueDate'],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: userDa.data()['taskstatus']
-                                              ? Colors.grey
-                                              : Colors.black,
-                                          decoration:
-                                              userDa.data()['taskstatus']
-                                                  ? TextDecoration.lineThrough
-                                                  : TextDecoration.none),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.2,
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    userDa.data()['taskdetails'],
+    return Column(
+      //crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc('nHWlml1op9eNg9Hl1TBZ')
+                .collection('Task')
+                .snapshots(),
+            builder: (context, asyncsnap) {
+              if (!asyncsnap.hasData) {
+                return Center(child: Text('NO TASKS LEFT YAY!!'));
+              }
+              return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: asyncsnap.data?.size,
+                  itemBuilder: (context, index) {
+                    QueryDocumentSnapshot<Map<String, dynamic>> userDa =
+                        asyncsnap.data!.docs[index];
+                    return Dismissible(
+                      key: UniqueKey(),
+                      child: InkWell(
+                        onTap: () {
+                          dialogbox(
+                            userDa.data()['id'],
+                            userDa.data()['tasktitle'],
+                            userDa.data()['DueDate'],
+                            userDa.data()['taskdetails'],
+                          );
+                        },
+                        child: Card(
+                          elevation: 10,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Checkbox(
+                                      value: userDa.data()['taskstatus'],
+                                      onChanged: (status) async {
+                                        await taskRef
+                                            .doc(userDa.data()['id'])
+                                            .update({
+                                          'taskstatus': true,
+                                        });
+                                      }),
+                                  Text(
+                                    userDa.data()['tasktitle'],
                                     style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
                                         color: userDa.data()['taskstatus']
                                             ? Colors.grey
                                             : Colors.black,
@@ -259,19 +225,44 @@ class _TaskManagerState extends State<TaskManager> {
                                             ? TextDecoration.lineThrough
                                             : TextDecoration.none),
                                   ),
+                                  Text(
+                                    userDa.data()['DueDate'],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: userDa.data()['taskstatus']
+                                            ? Colors.grey
+                                            : Colors.black,
+                                        decoration: userDa.data()['taskstatus']
+                                            ? TextDecoration.lineThrough
+                                            : TextDecoration.none),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.2,
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  userDa.data()['taskdetails'],
+                                  style: TextStyle(
+                                      color: userDa.data()['taskstatus']
+                                          ? Colors.grey
+                                          : Colors.black,
+                                      decoration: userDa.data()['taskstatus']
+                                          ? TextDecoration.lineThrough
+                                          : TextDecoration.none),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                        onDismissed: (direction) async {
-                          await taskRef.doc(userDa.data()['id']).delete();
-                        },
-                      );
-                    });
-              }),
-        ],
-      ),
+                      ),
+                      onDismissed: (direction) async {
+                        await taskRef.doc(userDa.data()['id']).delete();
+                      },
+                    );
+                  });
+            }),
+      ],
     );
   }
 }

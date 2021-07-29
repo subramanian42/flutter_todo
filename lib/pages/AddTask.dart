@@ -57,34 +57,14 @@ class _AddTaskState extends State<AddTask> {
     String date,
   ) async {
     var id1 = taskRef.doc().id;
-    Map data = {
+    await taskRef.doc(id1).set({
       'id': id1,
       'TaskTitle': title,
       'TaskDetails': details,
       'TaskStatus': status,
       'DueDate': date,
-    };
-    await taskRef.doc(id1).set(data);
-  }
-
-/*
-  deleteTask() async {
-    await usersRef.doc('0b52eD32RBfwv3Q73spu').delete();
-  } */
-  /*  _setTime(context) async {
-    TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    setState(() {
-      selectedTime = pickedTime;
-      final now = new DateTime.now();
-      final dt = DateTime(now.year, now.month, now.day, selectedTime!.hour,
-          selectedTime!.minute);
-      final format = DateFormat.jm();
-      _timeController.text = format.format(dt);
     });
-  } */
+  }
 
   @override
   Widget build(BuildContext context) {
