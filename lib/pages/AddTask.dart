@@ -47,7 +47,7 @@ class _AddTaskState extends State<AddTask> {
     );
     setState(() {
       selectedDate = picked;
-      _dateController.text = DateFormat('dd-MM-yyyy').format(selectedDate!);
+      _dateController.text = DateFormat('d/M/y').format(selectedDate!);
     });
   }
 

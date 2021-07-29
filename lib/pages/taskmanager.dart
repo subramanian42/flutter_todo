@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:todolist_1/bussiness/authentication.dart';
+import 'package:todolist_1/widgets/task.dart';
 
 class TaskManager extends StatefulWidget {
   TaskManager({Key? key}) : super(key: key);
@@ -196,54 +197,95 @@ class _TaskManagerState extends State<TaskManager> {
                           userDa.data()['TaskDetails'],
                         );
                       },
-                      child: Card(
-                        elevation: 10,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                      //starting of statless widget
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: SizedBox(
+                          height: 100,
+                          child: Card(
+                            elevation: 10,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
                                 Checkbox(
                                     value: userDa.data()['TaskStatus'],
                                     onChanged: (status) async {
                                       await taskRef
                                           .doc(userDa.data()['id'])
                                           .update({
-                                        'TaskStatus': true,
+                                        'TaskStatus': status,
                                       });
                                     }),
-                                Text(
-                                  userDa.data()['TaskTitle'],
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: userDa.data()['TaskStatus']
-                                          ? Colors.grey
-                                          : Colors.black,
-                                      decoration: userDa.data()['TaskStatus']
-                                          ? TextDecoration.lineThrough
-                                          : TextDecoration.none),
-                                ),
-                                Text(
-                                  userDa.data()['DueDate'],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: userDa.data()['TaskStatus']
-                                          ? Colors.grey
-                                          : Colors.black,
-                                      decoration: userDa.data()['TaskStatus']
-                                          ? TextDecoration.lineThrough
-                                          : TextDecoration.none),
+                                Taskcard(
+                                  title: userDa.data()['TaskTitle'],
+                                  subtitle: userDa.data()['TaskDetails'],
+                                  dueDate: userDa.data()['DueDate'],
+                                  taskStatus: userDa.data()['TaskStatus'],
                                 ),
                               ],
                             ),
-                            Container(
-                              width: MediaQuery.of(context).size.width / 1.2,
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                userDa.data()['TaskDetails'],
+                          ),
+                        ),
+                      ),
+                      // ends of stateless widget
+                    ),
+                    onDismissed: (direction) async {
+                      await taskRef.doc(userDa.data()['id']).delete();
+                    },
+                  );
+                });
+        });
+  }
+}
+
+/*                    Card(
+                        elevation: 10,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ListTile(
+                              leading: Checkbox(
+                                  value: userDa.data()['TaskStatus'],
+                                  onChanged: (status) async {
+                                    await taskRef
+                                        .doc(userDa.data()['id'])
+                                        .update({
+                                      'TaskStatus': true,
+                                    });
+                                  }),
+                              title: Text(
+                                userDa.data()['TaskTitle'],
                                 style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: userDa.data()['TaskStatus']
+                                        ? Colors.grey
+                                        : Colors.black,
+                                    decoration: userDa.data()['TaskStatus']
+                                        ? TextDecoration.lineThrough
+                                        : TextDecoration.none),
+                              ),
+                              subtitle: Wrap(
+                                children: [
+                                  Text(
+                                    userDa.data()['TaskDetails'],
+                                    style: TextStyle(
+                                        color: userDa.data()['TaskStatus']
+                                            ? Colors.grey
+                                            : Colors.black,
+                                        decoration: userDa.data()['TaskStatus']
+                                            ? TextDecoration.lineThrough
+                                            : TextDecoration.none),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                userDa.data()['DueDate'],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
                                     color: userDa.data()['TaskStatus']
                                         ? Colors.grey
                                         : Colors.black,
@@ -254,13 +296,4 @@ class _TaskManagerState extends State<TaskManager> {
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                    onDismissed: (direction) async {
-                      await taskRef.doc(userDa.data()['id']).delete();
-                    },
-                  );
-                });
-        });
-  }
-}
+                      ), */
