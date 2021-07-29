@@ -40,9 +40,9 @@ class _TaskManagerState extends State<TaskManager> {
 
   updateTask(docid) {
     taskRef.doc(docid).update({
-      'tasktitle': _titlecontroller.text,
-      'taskdetails': _taskcontroller.text,
-      'taskstatus': false,
+      'TaskTitle': _titlecontroller.text,
+      'TaskDetails': _taskcontroller.text,
+      'TaskStatus': false,
       'DueDate': _datecontroller.text,
     });
   }
@@ -72,8 +72,8 @@ class _TaskManagerState extends State<TaskManager> {
     });
   }
 
-  dialogbox(String docid, String tasktitle, String duedate, String details) {
-    _titlecontroller.text = tasktitle;
+  dialogbox(String docid, String TaskTitle, String duedate, String details) {
+    _titlecontroller.text = TaskTitle;
     _datecontroller.text = duedate;
     _taskcontroller.text = details;
     return showModalBottomSheet(
@@ -193,9 +193,9 @@ class _TaskManagerState extends State<TaskManager> {
                         onTap: () {
                           dialogbox(
                             userDa.data()['id'],
-                            userDa.data()['tasktitle'],
+                            userDa.data()['TaskTitle'],
                             userDa.data()['DueDate'],
-                            userDa.data()['taskdetails'],
+                            userDa.data()['TaskDetails'],
                           );
                         },
                         child: Card(
@@ -208,25 +208,24 @@ class _TaskManagerState extends State<TaskManager> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Checkbox(
-                                      value: userDa.data()['taskstatus'] != null
-                                          ? userDa.data()['taskstatus']
-                                          : false,
+                                      value:
+                                          userDa.data()['TaskStatus'] ?? false,
                                       onChanged: (status) async {
                                         await taskRef
                                             .doc(userDa.data()['id'])
                                             .update({
-                                          'taskstatus': true,
+                                          'TaskStatus': true,
                                         });
                                       }),
                                   Text(
-                                    userDa.data()['tasktitle'],
+                                    userDa.data()['TaskTitle'],
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
-                                        color: userDa.data()['taskstatus']
+                                        color: userDa.data()['TaskStatus']
                                             ? Colors.grey
                                             : Colors.black,
-                                        decoration: userDa.data()['taskstatus']
+                                        decoration: userDa.data()['TaskStatus']
                                             ? TextDecoration.lineThrough
                                             : TextDecoration.none),
                                   ),
@@ -234,10 +233,10 @@ class _TaskManagerState extends State<TaskManager> {
                                     userDa.data()['DueDate'],
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: userDa.data()['taskstatus']
+                                        color: userDa.data()['TaskStatus']
                                             ? Colors.grey
                                             : Colors.black,
-                                        decoration: userDa.data()['taskstatus']
+                                        decoration: userDa.data()['TaskStatus']
                                             ? TextDecoration.lineThrough
                                             : TextDecoration.none),
                                   ),
@@ -247,12 +246,12 @@ class _TaskManagerState extends State<TaskManager> {
                                 width: MediaQuery.of(context).size.width / 1.2,
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  userDa.data()['taskdetails'],
+                                  userDa.data()['TaskDetails'],
                                   style: TextStyle(
-                                      color: userDa.data()['taskstatus']
+                                      color: userDa.data()['TaskStatus']
                                           ? Colors.grey
                                           : Colors.black,
-                                      decoration: userDa.data()['taskstatus']
+                                      decoration: userDa.data()['TaskStatus']
                                           ? TextDecoration.lineThrough
                                           : TextDecoration.none),
                                 ),
@@ -272,8 +271,8 @@ class _TaskManagerState extends State<TaskManager> {
   }
 }
 /* ListTile(
-                                title: Text(userDa.data()['tasktitle']),
-                                subtitle: Text(userDa.data()['taskdetails']),
+                                title: Text(userDa.data()['TaskTitle']),
+                                subtitle: Text(userDa.data()['TaskDetails']),
                               ); */
 
 // ****************pervious function************* //
@@ -293,12 +292,12 @@ ListView.builder(
                           child: Row(
                             children: [
                               Checkbox(
-                                  value: userDa.data()['taskstatus'],
+                                  value: userDa.data()['TaskStatus'],
                                   onChanged: (status) async {
                                     await taskRef
                                         .doc(userDa.data()['id'])
                                         .update({
-                                      'taskstatus': true,
+                                      'TaskStatus': true,
                                     });
                                   }),
                               Column(
@@ -306,13 +305,13 @@ ListView.builder(
                                   FittedBox(
                                     fit: BoxFit.contain,
                                     child: Text(
-                                      userDa.data()['tasktitle'],
+                                      userDa.data()['TaskTitle'],
                                       style: TextStyle(
-                                          color: userDa.data()['taskstatus']
+                                          color: userDa.data()['TaskStatus']
                                               ? Colors.grey
                                               : Colors.black,
                                           decoration:
-                                              userDa.data()['taskstatus']
+                                              userDa.data()['TaskStatus']
                                                   ? TextDecoration.lineThrough
                                                   : TextDecoration.none),
                                     ),
@@ -320,13 +319,13 @@ ListView.builder(
                                   FittedBox(
                                     fit: BoxFit.contain,
                                     child: Text(
-                                      userDa.data()['taskdetails'],
+                                      userDa.data()['TaskDetails'],
                                       style: TextStyle(
-                                          color: userDa.data()['taskstatus']
+                                          color: userDa.data()['TaskStatus']
                                               ? Colors.grey
                                               : Colors.black,
                                           decoration:
-                                              userDa.data()['taskstatus']
+                                              userDa.data()['TaskStatus']
                                                   ? TextDecoration.lineThrough
                                                   : TextDecoration.none),
                                     ),
