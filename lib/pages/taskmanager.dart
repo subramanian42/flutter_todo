@@ -208,8 +208,7 @@ class _TaskManagerState extends State<TaskManager> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Checkbox(
-                                      value:
-                                          userDa.data()['TaskStatus'] ?? false,
+                                      value: userDa.data()['TaskStatus'],
                                       onChanged: (status) async {
                                         await taskRef
                                             .doc(userDa.data()['id'])
