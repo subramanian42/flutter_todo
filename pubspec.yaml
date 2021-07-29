@@ -25,11 +25,11 @@ dependencies:
     sdk: flutter
   cloud_firestore: ^2.4.0
   cupertino_icons: ^1.0.2
+  datetime_picker_formfield: ^2.0.0
   firebase_auth: ^3.0.1
   firebase_core: ^1.4.0
   google_sign_in: ^5.0.4
   intl: ^0.17.0
-  rxdart: ^0.27.1
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todolist_1/bussiness/authentication.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todolist_1/pages/AddTask.dart';
 
 import 'package:todolist_1/pages/taskmanager.dart';
@@ -14,16 +13,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //final GoogleSignIn _googleSignIn = GoogleSignIn();
-  late FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () async {
-            authUser.signOut();
+          onPressed: () {
+            authUser.signOut(); // working fine
             Navigator.pop(context);
           },
           icon: Image.asset(
@@ -45,8 +41,10 @@ class _HomePageState extends State<HomePage> {
       body: TaskManager(), //TaskList(),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add task',
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AddTask())),
+        onPressed: () =>
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return AddTask();
+        })),
         backgroundColor: Colors.white,
         child: Icon(
           Icons.add,

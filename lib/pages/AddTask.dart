@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:todolist_1/bussiness/authentication.dart';
 
@@ -13,7 +14,7 @@ class _AddTaskState extends State<AddTask> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _taskController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
-  DateTime? selectedDate = DateTime.now();
+  DateTime? selectedDate;
   //static var userid = FirebaseAuth.instance.currentUser!.uid;
   CollectionReference taskRef = FirebaseFirestore.instance
       .collection('users')
@@ -21,7 +22,7 @@ class _AddTaskState extends State<AddTask> {
       .collection('Task');
   @override
   void initState() {
-    _dateController.text = DateFormat('dd-mm-yyyy').format(DateTime.now());
+    _dateController.text = DateFormat('d/M/y').format(DateTime.now());
     super.initState();
   }
 
@@ -91,6 +92,8 @@ class _AddTaskState extends State<AddTask> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextField(
+                      maxLength: 20,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
                       cursorColor: Colors.black,
                       controller: _titleController,
                       decoration: InputDecoration(
@@ -179,8 +182,11 @@ class _AddTaskState extends State<AddTask> {
                             backgroundColor:
                                 MaterialStateProperty.resolveWith(getColor)),
                         onPressed: () {
-                          createTask(_titleController.text,
-                              _taskController.text, true, _dateController.text);
+                          createTask(
+                              _titleController.text,
+                              _taskController.text,
+                              false,
+                              _dateController.text);
 
                           Navigator.of(context).pop();
                         },

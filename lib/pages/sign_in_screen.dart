@@ -23,31 +23,6 @@ class _SignInScreenState extends State<SignInScreen> {
     super.initState();
   }
 
-/*   Future<User?> googlesignin() async {
-    final GoogleSignInAccount? googleSignInAccount =
-        await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount!.authentication;
-    final AuthCredential authCredential = GoogleAuthProvider.credential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-    final UserCredential userCredential =
-        await firebaseAuth.signInWithCredential(authCredential);
-    user = userCredential.user;
-    return user;
-  }
-
-  createUserInFireStore() async {
-    DocumentSnapshot doc = await usersRef.doc(user!.uid).get();
-    if (!doc.exists) {
-      await usersRef.doc(user?.uid).set({
-        'username': user?.displayName,
-        'userid': user?.uid,
-      });
-    }
-  } */
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,10 +39,16 @@ class _SignInScreenState extends State<SignInScreen> {
           height: MediaQuery.of(context).size.height / 2,
         ),
         GestureDetector(
-          onTap: () async {
-            await authUser.googlesignin().whenComplete(() => {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomePage()))
+          onTap: () {
+            authUser.googlesignin().whenComplete(() => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return HomePage();
+                      },
+                    ),
+                  ),
                 });
           },
           child: Image.asset(
