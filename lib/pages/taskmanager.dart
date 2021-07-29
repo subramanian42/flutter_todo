@@ -12,11 +12,14 @@ class TaskManager extends StatefulWidget {
 }
 
 class _TaskManagerState extends State<TaskManager> {
-  static CollectionReference usersRef =
-      FirebaseFirestore.instance.collection('users');
-  CollectionReference taskRef =
-      usersRef.doc(authUser.user!.uid).collection('Task');
-  static Query<Map> query = usersRef.doc(authUser.user!.uid).collection('Task');
+/*   static CollectionReference usersRef =
+      FirebaseFirestore.instance.collection('users'); */
+  CollectionReference taskRef = authUser.usersRef
+      .doc(authUser.firebaseAuth.currentUser!.uid)
+      .collection('Task');
+  static Query<Map> query = authUser.usersRef
+      .doc(authUser.firebaseAuth.currentUser!.uid)
+      .collection('Task');
   //usersRef.doc(userid).collection('Task');
   DateTime? selectedDate = DateTime.now();
 
@@ -171,7 +174,7 @@ class _TaskManagerState extends State<TaskManager> {
         StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: FirebaseFirestore.instance
                 .collection('users')
-                .doc('nHWlml1op9eNg9Hl1TBZ')
+                .doc(authUser.firebaseAuth.currentUser!.uid)
                 .collection('Task')
                 .snapshots(),
             builder: (context, asyncsnap) {
@@ -205,7 +208,9 @@ class _TaskManagerState extends State<TaskManager> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Checkbox(
-                                      value: userDa.data()['taskstatus'],
+                                      value: userDa.data()['taskstatus'] != null
+                                          ? userDa.data()['taskstatus']
+                                          : false,
                                       onChanged: (status) async {
                                         await taskRef
                                             .doc(userDa.data()['id'])
@@ -271,7 +276,7 @@ class _TaskManagerState extends State<TaskManager> {
                                 subtitle: Text(userDa.data()['taskdetails']),
                               ); */
 
-// ****************pervious functional************* //
+// ****************pervious function************* //
 
 /* 
 ListView.builder(

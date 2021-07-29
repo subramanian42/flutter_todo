@@ -1,12 +1,10 @@
-//import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:todolist_1/bussiness/authentication.dart';
-import 'package:todolist_1/pages/AddTask.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:todolist_1/pages/AddTask.dart';
 
 import 'package:todolist_1/pages/taskmanager.dart';
-//import 'sign_in_screen.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -18,11 +16,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //final GoogleSignIn _googleSignIn = GoogleSignIn();
   late FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-/*   Future<void> signOut() async {
-    await firebaseAuth.signOut();
-    await _googleSignIn.signOut();
-  }
- */
 
   @override
   Widget build(BuildContext context) {

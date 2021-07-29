@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todolist_1/bussiness/authentication.dart';
+//import 'package:todolist_1/pages/AddTask.dart';
 import 'package:todolist_1/pages/homepage.dart';
 
 import 'package:todolist_1/pages/sign_in_screen.dart';
@@ -21,6 +22,21 @@ class MyApp extends StatelessWidget {
       home: authUser.firebaseAuth.currentUser != null
           ? HomePage()
           : SignInScreen(),
+
+/*       initialRoute: '/',
+      routes: {
+        ' /': (context) {
+          if (authUser.firebaseAuth.currentUser != null) return HomePage();
+
+          return SignInScreen();
+        },
+        ' /second': (context) {
+          if (authUser.firebaseAuth.currentUser != null) return AddTask();
+          return SignInScreen();
+        },
+      },
+      onUnknownRoute: (settings) =>
+          MaterialPageRoute(builder: (context) => SignInScreen()), */
     );
   }
 }

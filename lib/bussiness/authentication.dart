@@ -14,7 +14,7 @@ class Authentication {
       .doc(authUser.user!.uid)
       .collection('Task'); */
   User? user;
-  static final userid = FirebaseAuth.instance.currentUser!.uid;
+
   Future<void> signOut() async {
     await googleSignIn.disconnect();
     await firebaseAuth.signOut();
@@ -26,7 +26,7 @@ class Authentication {
     }
   }
 
-  Future<User?> googlesignin() async {
+  googlesignin() async {
     final GoogleSignInAccount? googleSignInAccount =
         await googleSignIn.signIn();
     signedIn = true;

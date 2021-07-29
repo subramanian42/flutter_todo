@@ -17,7 +17,7 @@ class _AddTaskState extends State<AddTask> {
   //static var userid = FirebaseAuth.instance.currentUser!.uid;
   CollectionReference taskRef = FirebaseFirestore.instance
       .collection('users')
-      .doc(authUser.user!.uid)
+      .doc(authUser.firebaseAuth.currentUser!.uid)
       .collection('Task');
   @override
   void initState() {
