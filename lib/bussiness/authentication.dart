@@ -1,35 +1,67 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+//import 'package:firebase_core/firebase_core.dart';
+//import 'package:flutter/material.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:todolist_1/pages/homepage.dart';
+//import 'package:todolist_1/pages/homepage.dart';
 
 class Authentication {
   final GoogleSignIn googleSignIn = GoogleSignIn();
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final CollectionReference usersRef =
+      FirebaseFirestore.instance.collection('users');
 
-  bool signedIn = false;
-  final usersRef = FirebaseFirestore.instance.collection('users');
-/*   CollectionReference taskRef = FirebaseFirestore.instance
+  // final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  CollectionReference taskRef = FirebaseFirestore.instance
       .collection('users')
-      .doc(authUser.user!.uid)
-      .collection('Task'); */
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .collection('Task');
+  static Query<Map> query = FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .collection('Task');
   User? user;
 
-  Future<void> signOut() async {
-    await googleSignIn.disconnect();
-    await firebaseAuth.signOut();
+  Query<Map> getQuery() {
+    return query;
   }
 
-  checkUser() {
-    if (firebaseAuth.currentUser != null) {
-      googleSignIn.signInSilently();
+  CollectionReference getTaskReference() {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection('Task');
+  }
+
+  void checkUser(context) {
+    if (user != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => HomePage(),
+        ),
+      );
     }
   }
 
-  googlesignin() async {
+  Stream<QuerySnapshot<Map<String, dynamic>>> tasklist() {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection('Task')
+        .snapshots();
+  }
+
+  Future<void> signOut() async {
+    await googleSignIn.signOut();
+    await FirebaseAuth.instance.signOut();
+  }
+
+  Future<User?> googlesignin() async {
     final GoogleSignInAccount? googleSignInAccount =
         await googleSignIn.signIn();
-    signedIn = true;
+
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount!.authentication;
     final AuthCredential authCredential = GoogleAuthProvider.credential(
@@ -37,13 +69,14 @@ class Authentication {
       idToken: googleSignInAuthentication.idToken,
     );
     final UserCredential userCredential =
-        await firebaseAuth.signInWithCredential(authCredential);
-    user = userCredential.user;
+        await FirebaseAuth.instance.signInWithCredential(authCredential);
+    User? user = userCredential.user;
     createUserInFireStore(user);
     return user;
   }
 
   createUserInFireStore(User? user) async {
+    //final usersRef = FirebaseFirestore.instance.collection('users');
     DocumentSnapshot doc = await usersRef.doc(user!.uid).get();
     if (!doc.exists) {
       await usersRef.doc(user.uid).set(
@@ -57,4 +90,4 @@ class Authentication {
   }
 }
 
-Authentication authUser = Authentication();
+final Authentication authenticatedUser = Authentication();

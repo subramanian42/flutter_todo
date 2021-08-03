@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:todolist_1/bussiness/authentication.dart';
 
 class AddTask extends StatefulWidget {
-  //const TaskBuild({Key? key}) : super(key: key);
   @override
   _AddTaskState createState() => _AddTaskState();
 }
@@ -15,12 +13,7 @@ class _AddTaskState extends State<AddTask> {
   TextEditingController _taskController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
   DateTime? selectedDate;
-  //static var userid = FirebaseAuth.instance.currentUser!.uid;
-  CollectionReference taskRef = FirebaseFirestore.instance
-      .collection('users')
-      .doc(authUser.firebaseAuth.currentUser!.uid)
-      .collection('Task');
-  @override
+
   void initState() {
     _dateController.text = DateFormat('d/M/y').format(DateTime.now());
     super.initState();
@@ -57,8 +50,8 @@ class _AddTaskState extends State<AddTask> {
     bool status,
     String date,
   ) async {
-    var id1 = taskRef.doc().id;
-    await taskRef.doc(id1).set({
+    var id1 = authenticatedUser.getTaskReference().doc().id;
+    await authenticatedUser.getTaskReference().doc(id1).set({
       'id': id1,
       'TaskTitle': title,
       'TaskDetails': details,
@@ -97,9 +90,6 @@ class _AddTaskState extends State<AddTask> {
                       cursorColor: Colors.black,
                       controller: _titleController,
                       decoration: InputDecoration(
-                        /*  fillColor: Colors.black,
-                        focusColor: Colors.black,
-                        hoverColor: Colors.black, */
                         focusedBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.black, width: 2.0),
@@ -123,6 +113,7 @@ class _AddTaskState extends State<AddTask> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextField(
+                      showCursor: false,
                       controller: _taskController,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
@@ -188,7 +179,7 @@ class _AddTaskState extends State<AddTask> {
                               false,
                               _dateController.text);
 
-                          Navigator.of(context).pop();
+                          Navigator.pop(context);
                         },
                         child: Text('ADD TASK')),
                   )

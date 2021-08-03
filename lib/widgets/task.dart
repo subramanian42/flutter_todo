@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class Taskcard extends StatelessWidget {
+class Taskcard extends StatefulWidget {
   const Taskcard({
     Key? key,
     required this.title,
@@ -14,6 +14,12 @@ class Taskcard extends StatelessWidget {
   final String subtitle;
   final String dueDate;
   final bool taskStatus;
+
+  @override
+  _TaskcardState createState() => _TaskcardState();
+}
+
+class _TaskcardState extends State<Taskcard> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -28,26 +34,26 @@ class Taskcard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    widget.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: taskStatus ? Colors.grey : Colors.black,
-                        decoration: taskStatus
+                        color: widget.taskStatus ? Colors.grey : Colors.black,
+                        decoration: widget.taskStatus
                             ? TextDecoration.lineThrough
                             : TextDecoration.none),
                   ),
                   Padding(padding: EdgeInsets.only(bottom: 2.0)),
                   Text(
-                    subtitle,
+                    widget.subtitle,
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 14,
-                        color: taskStatus ? Colors.grey : Colors.black,
-                        decoration: taskStatus
+                        color: widget.taskStatus ? Colors.grey : Colors.black,
+                        decoration: widget.taskStatus
                             ? TextDecoration.lineThrough
                             : TextDecoration.none),
                   ),
@@ -68,12 +74,12 @@ class Taskcard extends StatelessWidget {
                         width: 10,
                       ),
                       Text(
-                        dueDate,
+                        widget.dueDate,
                         style: TextStyle(
                           fontSize: 12.0,
                           color: DateTime.now()
                                   .difference(
-                                      DateFormat('d/M/y').parse(dueDate))
+                                      DateFormat('d/M/y').parse(widget.dueDate))
                                   .isNegative
                               ? Colors.black
                               : Colors.red,
