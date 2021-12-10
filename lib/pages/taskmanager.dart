@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
-import 'package:todolist_1/bussiness/authentication.dart';
+import 'package:todolist_1/business/authentication.dart';
 import 'package:todolist_1/widgets/task.dart';
 
 class TaskManager extends StatefulWidget {
